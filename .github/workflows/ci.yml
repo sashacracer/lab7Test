@@ -5,16 +5,16 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '6.0.x', '8.0.x' ]
     steps:
-      - name: Check any
-        uses: actions/checkout@v6
-
-      - name: install Dotnet
-        uses: actions/setup-dotnet@v6
-        with:
-          dotnet-version: ['6.0.x', '8.0.x', '9.0.x']
-        
-      - name: Build
-        run: dotnet build Console.App/Console.App.csproj
+        - uses: actions/checkout@v6
+        - name: Setup Dotnet ${{ matrix.dotnet-version}}
+          uses: actions/setup-dotnet@v6
+          with:
+            dotnet-version: ${{ matrix.dotnet-version}}
+        - name: Build
+          run: dotnet build Console.App/Console.App.csproj
 
 
